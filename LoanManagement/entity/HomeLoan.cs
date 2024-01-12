@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoanManagement.entity
+{
+    public class HomeLoan : Loan
+    {
+        public string PropertyAddress { get; set; }
+        public int PropertyValue { get; set; }
+
+        // Default constructor
+        public HomeLoan() { }
+
+        // Overloaded constructor
+        public HomeLoan(int loanId, int customer, decimal principalAmount, decimal interestRate, int loanTerm, string loanType, string loanStatus, string propertyAddress, int propertyValue)
+            : base(loanId, customer, principalAmount, interestRate, loanTerm, loanType, loanStatus)
+        {
+            PropertyAddress = propertyAddress;
+            PropertyValue = propertyValue;
+        }
+    }
+}
