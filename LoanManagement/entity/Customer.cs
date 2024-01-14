@@ -15,10 +15,8 @@ namespace LoanManagement.entity
         public string Address { get; set; }
         public int CreditScore { get; set; }
 
-        // Default constructor
         public Customer() { }
 
-        // Overloaded constructor
         public Customer(int customerId, string name, string emailAddress, string phoneNumber, string address, int creditScore)
         {
             CustomerId = customerId;

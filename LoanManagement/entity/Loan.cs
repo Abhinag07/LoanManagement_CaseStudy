@@ -18,10 +18,8 @@ namespace LoanManagement.entity
         public string LoanType { get; set; }
         public string LoanStatus { get; set; }
 
-        // Default constructor
         public Loan() { }
 
-        // Overloaded constructor
         public Loan(int loanId, int customer, decimal principalAmount, decimal interestRate, int loanTerm, string loanType, string loanStatus)
         {
             LoanId = loanId;

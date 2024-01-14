@@ -202,7 +202,7 @@ namespace LoanManagement.dao
                             }
                             else
                             {
-                                throw new InvalidLoanException("Loan not found.");
+                                throw new InvalidLoanException("Loan not found");
                             }
                         }
                     }
@@ -328,6 +328,45 @@ namespace LoanManagement.dao
                 return null;
             }            
         }
+
+		public bool GetLoanByIdForAmount(int loanId)
+		{
+				using (SqlConnection connection = DBUtil.GetDBConn())
+				{
+					connection.Open();
+
+					string selectQuery = "SELECT * FROM Loan WHERE LoanId = @LoanId";
+					using (SqlCommand command = new SqlCommand(selectQuery, connection))
+					{
+						command.Parameters.AddWithValue("@LoanId", loanId);
+
+						using (SqlDataReader reader = command.ExecuteReader())
+						{
+							if (reader.Read())
+							{
+								Loan loan = new Loan
+								{
+									LoanId = Convert.ToInt32(reader["LoanId"]),
+									PrincipalAmount = Convert.ToDecimal(reader["PrincipalAmount"]),
+									InterestRate = Convert.ToDecimal(reader["InterestRate"]),
+									LoanTerm = Convert.ToInt32(reader["LoanTerm"]),
+									LoanType = reader["LoanType"].ToString(),
+									LoanStatus = reader["LoanStatus"].ToString(),
+									CustomerId = Convert.ToInt32(reader["CustomerId"])
+								};
+
+								return true;
+							}
+							else
+							{
+                            throw new InvalidLoanException("Loan ID not valid");
+                            }
+					}
+					}
+				}
+			
+		}
+
 
 		public void LoanRepayment(int loanId, decimal amount)
 		{

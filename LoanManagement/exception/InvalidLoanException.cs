@@ -8,6 +8,8 @@ namespace LoanManagement.exception
 {
     public class InvalidLoanException : Exception
     {
-        public InvalidLoanException(string message) : base(message) { }
+        public InvalidLoanException(string message) : base(message) {
+            //Console.WriteLine(message);
+          }
     }
 }

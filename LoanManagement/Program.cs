@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
 using LoanManagement.dao;
@@ -17,18 +18,27 @@ namespace LoanManagement
 
 			while (true) 
 			{
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-				Console.WriteLine("\n1. Apply for Loan");
-				Console.WriteLine("2. Calculate interest");
-				Console.WriteLine("3. Check Loan Status");
-				Console.WriteLine("4. Calculate EMI for the loan");
-				Console.WriteLine("5. Pay EMI of your loan");
-				Console.WriteLine("6. Get All Loan Details");
-				Console.WriteLine("7. Get Loan Details by Id");
-				Console.WriteLine("8. Log Out");
-                Console.ResetColor();
-				Console.WriteLine("Choose options from above");
-                int choice = int.Parse(Console.ReadLine());
+                int choice = 0;
+                try
+                {
+                    Console.WriteLine("===================================================");
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine("\n1 => Apply for Loan");
+                    Console.WriteLine("2 => Calculate interest");
+                    Console.WriteLine("3 => Check Loan Status");
+                    Console.WriteLine("4 => Calculate EMI for the loan");
+                    Console.WriteLine("5 => Pay EMI of your loan");
+                    Console.WriteLine("6 => Get All Loan Details");
+                    Console.WriteLine("7 => Get Loan Details by Id");
+                    Console.WriteLine("8 => Log Out");
+                    Console.ResetColor();
+                    Console.WriteLine("Choose options from above");
+                    choice = int.Parse(Console.ReadLine());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Enter only int between 1 to 8 as "+ e.Message);
+                }
                 switch (choice)
                 {
                     case 1:
@@ -76,7 +86,10 @@ namespace LoanManagement
                             Console.WriteLine("Enter Loan Id to calculate interest");
                             int loanId = Convert.ToInt32(Console.ReadLine());
                             decimal interest = loanRepository.CalculateInterest(loanId);
-                            Console.WriteLine("Interest amount is {0}", interest);
+                            if (interest >= 0)
+                            {
+                                Console.WriteLine("Interest amount is {0}", interest);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -101,7 +114,10 @@ namespace LoanManagement
                             Console.WriteLine("Enter LoanId to calculate EMI");
                             int loanId = Convert.ToInt32(Console.ReadLine());
                             decimal emi = loanRepository.CalculateEMI(loanId);
-                            Console.WriteLine("EMI per month is {0}", emi);
+                            if (emi >= 0)
+                            {
+                                Console.WriteLine("EMI per month is {0}", emi);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -109,19 +125,33 @@ namespace LoanManagement
                         }
                     break;
                     case 5:
+                        int loanid = 0;
                         try
                         {
                             Console.WriteLine("Enter LoanId to pay EMI");
-                            int loanId = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter amount u want to pay");
-                            decimal amount = Convert.ToDecimal(Console.ReadLine());
-                            loanRepository.LoanRepayment(loanId, amount);
-                        }
+                             loanid = Convert.ToInt32(Console.ReadLine());
+                            if (loanRepository.GetLoanByIdForAmount(loanid))
+                            {
+                                Console.WriteLine("Enter amount u want to pay");
+                                decimal amount = Convert.ToDecimal(Console.ReadLine());
+                                if (amount > 0)
+                                {
+                                    loanRepository.LoanRepayment(loanid, amount);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("enter positive amaount value");
+                                }
+                            }
+
+						}
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
+                            
                         }
-                        break;                    
+						
+						break;                    
                     case 6:
                         try
                         {
@@ -162,7 +192,7 @@ namespace LoanManagement
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.WriteLine("Wrong Option!");
+                        Console.WriteLine("");
                         break;
                 }
             } 
