@@ -60,8 +60,15 @@ namespace LoanManagement
                             Console.Write("Loan Term (months): ");
                             int loanTerm = int.Parse(Console.ReadLine());
 
-                            Console.Write("Loan Loan ID: ");
+                            Console.Write("Enter Loan ID: ");
                             int loanId = int.Parse(Console.ReadLine());
+
+                            while (loanRepository.GetLoanByIdForApply(loanId))
+                            {
+
+								Console.Write("The Loan ID you entered already exists please re-enter: ");
+								loanId = int.Parse(Console.ReadLine());
+							}
 
                             Console.Write("Loan Type (CarLoan/HomeLoan): ");
                             string loanType = Console.ReadLine();

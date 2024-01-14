@@ -366,6 +366,43 @@ namespace LoanManagement.dao
 				}
 			
 		}
+		public bool GetLoanByIdForApply(int loanId)
+		{
+			using (SqlConnection connection = DBUtil.GetDBConn())
+			{
+				connection.Open();
+
+				string selectQuery = "SELECT * FROM Loan WHERE LoanId = @LoanId";
+				using (SqlCommand command = new SqlCommand(selectQuery, connection))
+				{
+					command.Parameters.AddWithValue("@LoanId", loanId);
+
+					using (SqlDataReader reader = command.ExecuteReader())
+					{
+						if (reader.Read())
+						{
+							Loan loan = new Loan
+							{
+								LoanId = Convert.ToInt32(reader["LoanId"]),
+								PrincipalAmount = Convert.ToDecimal(reader["PrincipalAmount"]),
+								InterestRate = Convert.ToDecimal(reader["InterestRate"]),
+								LoanTerm = Convert.ToInt32(reader["LoanTerm"]),
+								LoanType = reader["LoanType"].ToString(),
+								LoanStatus = reader["LoanStatus"].ToString(),
+								CustomerId = Convert.ToInt32(reader["CustomerId"])
+							};
+
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+				}
+			}
+
+		}
 
 
 		public void LoanRepayment(int loanId, decimal amount)

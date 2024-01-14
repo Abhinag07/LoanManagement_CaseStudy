@@ -19,6 +19,8 @@ namespace LoanManagement.dao
         List<Loan> GetAllLoans();
         Loan GetLoanById(int loanId);
 
-        bool GetLoanByIdForAmount(int loanId);
+
+		bool GetLoanByIdForApply(int loanId);
+		bool GetLoanByIdForAmount(int loanId);
 	}
 }
