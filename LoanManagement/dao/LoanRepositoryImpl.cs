@@ -404,6 +404,32 @@ namespace LoanManagement.dao
 
 		}
 
+		public bool Getcustomer(int CustomerId)
+		{
+			using (SqlConnection connection = DBUtil.GetDBConn())
+			{
+				connection.Open();
+
+				string selectQuery = "SELECT * FROM Customer WHERE CustomerId = @CustomerId";
+				using (SqlCommand command = new SqlCommand(selectQuery, connection))
+				{
+					command.Parameters.AddWithValue("@CustomerId", CustomerId);
+
+					using (SqlDataReader reader = command.ExecuteReader())
+					{
+						if (reader.Read())
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+				}
+			}
+
+		}
 
 		public void LoanRepayment(int loanId, decimal amount)
 		{

@@ -18,7 +18,7 @@ namespace LoanManagement.dao
         void LoanRepayment(int loanId, decimal amount);
         List<Loan> GetAllLoans();
         Loan GetLoanById(int loanId);
-
+        bool Getcustomer(int CustomerId);
 
 		bool GetLoanByIdForApply(int loanId);
 		bool GetLoanByIdForAmount(int loanId);

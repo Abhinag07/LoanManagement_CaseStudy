@@ -50,19 +50,33 @@ namespace LoanManagement
 
                             Console.Write("Customer ID: ");
                             int customerId = int.Parse(Console.ReadLine());
+                            if (!loanRepository.Getcustomer(customerId))
+                            {
+                                throw new Exception("Customer does not exist");
+                            }
 
                             Console.Write("Principal Amount: ");
                             decimal principalAmount = decimal.Parse(Console.ReadLine());
+                            if(principalAmount < 0)
+                            {
+                                throw new Exception("Enter positive value");
+                            }
 
                             Console.Write("Interest Rate: ");
                             decimal interestRate = decimal.Parse(Console.ReadLine());
-
-                            Console.Write("Loan Term (months): ");
+							if (interestRate <= 0)
+							{
+								throw new Exception("Enter positive value");
+							}
+							Console.Write("Loan Term (months): ");
                             int loanTerm = int.Parse(Console.ReadLine());
+							if (loanTerm <= 0)
+							{
+								throw new Exception("Enter positive value");
+							}
 
-                            Console.Write("Enter Loan ID: ");
+							Console.Write("Enter Loan ID: ");
                             int loanId = int.Parse(Console.ReadLine());
-
                             while (loanRepository.GetLoanByIdForApply(loanId))
                             {
 
@@ -72,6 +86,11 @@ namespace LoanManagement
 
                             Console.Write("Loan Type (CarLoan/HomeLoan): ");
                             string loanType = Console.ReadLine();
+                            if(!loanType.Equals("HomeLoan", StringComparison.OrdinalIgnoreCase)&&
+								!loanType.Equals("CarLoan", StringComparison.OrdinalIgnoreCase))
+                            {
+                                throw new Exception("Enter homeloan or carloan only");
+                            }
 
                             loan.CustomerId = customerId;
                             loan.PrincipalAmount = principalAmount;
